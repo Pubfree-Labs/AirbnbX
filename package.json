@@ -1,0 +1,13 @@
+{
+  "name": "wild-oasis-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:admin": "npm run dev --workspace @wild-oasis/admin",
+    "dev:website": "npm run dev --workspace @wild-oasis/website",
+    "build": "npm run build --workspaces --if-present",
+    "build:admin": "npm run build --workspace @wild-oasis/admin",
+    "build:website": "npm run build --workspace @wild-oasis/website"
+  }
+}
