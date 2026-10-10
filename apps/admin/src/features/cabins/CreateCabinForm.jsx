@@ -48,13 +48,9 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       );
   }
 
-  function onError(errors) {
-    // console.log(errors);
-  }
-
   return (
     <Form
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? "modal" : "regular"}
     >
       <FormRow label="客房名称" error={errors?.name?.message}>
@@ -139,7 +135,6 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       </FormRow>
 
       <FormRow>
-        {/* type is an HTML attribute! */}
         <Button
           variation="secondary"
           type="reset"

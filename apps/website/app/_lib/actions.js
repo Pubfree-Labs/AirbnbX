@@ -156,18 +156,15 @@ export async function deleteBooking(bookingId) {
 export async function updateBooking(formData) {
   const bookingId = Number(formData.get("bookingId"));
 
-  // 1) Authentication
   const session = await auth();
   if (!session) throw new Error("请先登录");
   const supabase = createClient();
 
-  // 3) Building update data
   const updateData = {
     numGuests: Number(formData.get("numGuests")),
     observations: formData.get("observations").slice(0, 1000),
   };
 
-  // 4) Mutation
   const { error } = await supabase
     .from("bookings")
     .update(updateData)
@@ -175,14 +172,11 @@ export async function updateBooking(formData) {
     .select()
     .single();
 
-  // 5) Error handling
   if (error) throw new Error("无法更新预订");
 
-  // 6) Revalidation
   revalidatePath(`/account/reservations/edit/${bookingId}`);
   revalidatePath("/account/reservations");
 
-  // 7) Redirecting
   redirect("/account/reservations");
 }
 
