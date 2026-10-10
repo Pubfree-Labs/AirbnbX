@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-const initialState = { error: "" };
+const initialState = { error: "", redirectTo: "" };
 
 function AuthSubmitButton({ mode }) {
   const { pending } = useFormStatus();
@@ -28,6 +29,10 @@ function AuthSubmitButton({ mode }) {
 export default function AuthForm({ action, mode, nextPath = "/account" }) {
   const [state, formAction] = useFormState(action, initialState);
   const isRegister = mode === "register";
+
+  useEffect(() => {
+    if (state?.redirectTo) window.location.replace(state.redirectTo);
+  }, [state?.redirectTo]);
 
   return (
     <form action={formAction} className="w-full max-w-lg space-y-6">

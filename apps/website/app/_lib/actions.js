@@ -30,7 +30,10 @@ export async function loginAction(_previousState, formData) {
           : error.message,
     };
 
-  redirect(safeNextPath(formData.get("next")?.toString()));
+  return {
+    error: "",
+    redirectTo: safeNextPath(formData.get("next")?.toString()),
+  };
 }
 
 export async function signUpAction(_previousState, formData) {
@@ -62,11 +65,12 @@ export async function signUpAction(_previousState, formData) {
         ? "该邮箱已注册，请直接登录"
         : error.message,
     };
-  if (data.session) redirect(next);
+  if (data.session) return { error: "", redirectTo: next };
 
-  redirect(
-    `/login?message=${encodeURIComponent("请查收邮件并确认账户")}`
-  );
+  return {
+    error: "",
+    redirectTo: `/login?message=${encodeURIComponent("请查收邮件并确认账户")}`,
+  };
 }
 
 export async function updateGuest(_previousState, formData) {

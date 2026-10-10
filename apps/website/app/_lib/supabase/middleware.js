@@ -27,18 +27,9 @@ export async function updateSession(request) {
     }
   );
 
-  const { data } = await supabase.auth.getClaims();
-  const claims = data?.claims;
-
-  if (!claims?.sub && request.nextUrl.pathname.startsWith("/account")) {
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    loginUrl.searchParams.set(
-      "next",
-      `${request.nextUrl.pathname}${request.nextUrl.search}`
-    );
-    return NextResponse.redirect(loginUrl);
-  }
+  // Refresh the session cookie when possible. Authorization is enforced in
+  // the account layout, where the Node runtime can reliably reach Supabase.
+  await supabase.auth.getUser();
 
   return response;
 }
